@@ -1,30 +1,57 @@
+# variables.tf
 variable "resource_group_name" {
-  default = "MSA-ResourceGroup"
+  description = "Name of the resource group"
+  type        = string
 }
+
 variable "location" {
-  default = "East US"
+  description = "Azure region"
+  type        = string
 }
+
 variable "vnet_name" {
-  default = "MSA-VNet"
+  description = "Name of the virtual network"
+  type        = string
 }
-variable "subnet_name" {
-  default = "AKS-Subnet"
-}
+
 variable "vnet_address_space" {
-  default = ["10.0.0.0/16"]
+  description = "Address space for the virtual network"
+  type        = string
 }
-variable "subnet_prefix" {
-  default = ["10.0.1.0/24"]
+
+variable "aks_subnet_prefix" {
+  description = "Address prefix for AKS subnet"
+  type        = string
 }
-variable "aks_cluster_name" {
-  default = "MSA-AKS"
-}
-variable "node_count" {
-  default = 2
-}
-variable "node_size" {
-  default = "Standard_DS2_v2"
-}
+
+# variable "db_subnet_prefix" {
+#   description = "Address prefix for DB subnet"
+#   type        = string
+# }
+
 variable "acr_name" {
-  default = "msaregistry"
+  description = "Name of the Azure Container Registry"
+  type        = string
+}
+
+variable "cluster_name" {
+  description = "Name of the AKS cluster"
+  type        = string
+}
+
+variable "kubernetes_version" {
+  description = "Kubernetes version"
+  type        = string
+}
+
+variable "node_count" {
+  description = "Number of nodes in the default node pool"
+  type        = number
+  default     = 2
+}
+
+variable "vm_size" {
+  description = "Size of the VM for nodes"
+  type        = string
+  default     = "Standard_DS2_v2"
 }

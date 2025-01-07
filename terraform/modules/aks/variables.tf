@@ -3,4 +3,6 @@ variable "subnet_id" {}
 variable "cluster_name" {}
 variable "location" {}
 variable "node_count" {}
-variable "node_size" {}
+variable "acr_id" {}
+variable "vm_size" {}
+variable "kubernetes_version" {}
