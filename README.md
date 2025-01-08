@@ -16,10 +16,18 @@ This project implements a microservices architecture on Azure Kubernetes Service
 
 ## Infrastructure Setup
 
+### 0. Create Azure Service Principal
+```bash
+az ad sp create-for-rbac --sdk-auth --role="Owner" --scopes="/subscriptions/xx-xxxx-" -n "practical-devops"
+```
+
 ### 1. Azure Resources (Terraform)
 ```bash
 # Move to terraform folder
 cd terraform
+
+# Login to Azure
+az login
 
 # Initialize Terraform
 terraform init
@@ -85,6 +93,9 @@ cp kube-prometheus-stack/values.yaml ./kube-prometheus-stack-values.yaml
 
 # Install Prometheus
 helm -n monitoring upgrade prometheus-grafana-stack --create-namespace --install -f kube-prometheus-stack-values.yaml kube-prometheus-stack
+
+# Update configuration
+helm -n monitoring upgrade prometheus-grafana-stack --create-namespace -f kube-prometheus-stack-values.yaml kube-prometheus-stack
 ```
 
 #### Access Grafana:

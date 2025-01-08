@@ -23,10 +23,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 }
 
-# Have an issue: Workaround by run command line
+# Have an issue: Workaround by run command line 
+# Resolved by recreate app registration with Onwer permission
 # az aks update -n <cluster_name> -g <resource_group_name> --attach-acr <ACR_name>
 # Grant AKS access to ACR
-resource "azurerm_role_assignment" "aks_acr" {
+resource "azurerm_role_assignment" "aks_acr_pull" {
   principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
   role_definition_name             = "AcrPull"
   scope                           = var.acr_id
@@ -35,4 +36,10 @@ resource "azurerm_role_assignment" "aks_acr" {
   depends_on = [
     azurerm_kubernetes_cluster.aks
   ]
+}
+
+resource "azurerm_role_assignment" "aks_acr_push" {
+  principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+  role_definition_name = "AcrPush"
+  scope                = var.acr_id
 }
