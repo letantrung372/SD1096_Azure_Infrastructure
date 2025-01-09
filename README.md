@@ -48,34 +48,57 @@ Key resources created:
 - Azure Kubernetes Service (AKS)
 
 ### 2. CI/CD Pipeline (Azure DevOps)
-Not start Yet
-<!-- 
 #### Setup Steps:
 1. Create Azure DevOps Project
 2. Configure Service Connections
-3. Create Variable Groups for environments
-4. Import pipeline definitions
+3. Import pipeline definitions
+
+#### Configure Service Connections  
+
+**1. ACR Service Connection**  
+This service connection allows Azure DevOps to push and pull images from the Azure Container Registry.  
+
+**Steps to Configure:**  
+Navigate to **Project Settings** > **Service connections** in Azure DevOps. Create a new service connection of type **Azure Resource Manager**, select the subscription containing the ACR, and choose the resource group where the ACR is located. Finally, grant permissions to pipelines to use this connection.  
+
+**2. AKS Service Connection**  
+This service connection allows Azure DevOps to interact with the AKS cluster for deployment.  
+
+**Steps to Configure:**  
+Go to **Project Settings** > **Service connections** in Azure DevOps. Create a new service connection of type **Kubernetes**, provide the cluster name, namespace, and credentials, and grant pipeline permissions to use the connection.  
+
+**3. ARM Service Connection**  
+This service connection allows interaction with Azure Resource Manager (ARM) for managing resources.  
+
+**Steps to Configure:**  
+Navigate to **Project Settings** > **Service connections** in Azure DevOps. Create a new service connection of type **Azure Resource Manager**, select the subscription and resource group to manage, and grant permissions to pipelines to use the connection.  
 
 #### Pipeline Structure:
 ```
-└── repository root
-    ├── azure-pipelines.yml
-    ├── frontend/
-    │   ├── azure-pipelines.yml
-    │   ├── Dockerfile
-    │   └── k8s/
-    │       └── deployment.yaml
-    ├── backend/
-    │   ├── azure-pipelines.yml
-    │   ├── Dockerfile
-    │   └── k8s/
-    │       └── deployment.yaml
-    └── mongodb/
-        ├── azure-pipelines.yml
-        ├── Dockerfile
-        └── k8s/
-            └── deployment.yaml
-``` -->
+root  
+├── mongodb.yaml                     # Deployment file for MongoDB  
+└── src  
+    ├── azure-pipelines.yml          # Azure Pipeline template  
+    ├── backend  
+    │   ├── azure-pipeline.yml       # Pipeline for backend (uses template)  
+    │   └── k8s  
+    │       └── deployment.yml       # Deployment file for backend  
+    └── frontend  
+        ├── azure-pipeline.yml       # Pipeline for frontend (uses template)  
+        └── k8s  
+            └── deployment.yml       # Deployment file for frontend  
+```
+
+#### Pipeline Stages
+1. Build Docker Image and Push to ACR
+Build a Docker image using the provided Dockerfile.
+Tag the image with the current build number or Git commit SHA.
+Push the built image to an Azure Container Registry (ACR).
+2. Deploy to AKS
+Deploy the application (backend, frontend, and MongoDB) to an AKS cluster using the respective Kubernetes manifest files (deployment.yml).
+3. Cleanup
+Retain the last 5 images in the ACR.
+Remove older images to free up storage space.
 
 ### 3. Monitoring Setup (Prometheus & Grafana)
 
