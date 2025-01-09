@@ -48,5 +48,7 @@ module "aks" {
   acr_id              = module.acr.acr_id
   node_count         = var.node_count
   vm_size            = var.vm_size
+  dns_service_ip      = var.dns_service_ip
+  aks_subnet_prefix = var.aks_subnet_prefix
   depends_on = [module.resource_group, module.network, module.acr]
 }

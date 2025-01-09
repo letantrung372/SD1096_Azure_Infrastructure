@@ -24,10 +24,10 @@ variable "aks_subnet_prefix" {
   type        = string
 }
 
-# variable "db_subnet_prefix" {
-#   description = "Address prefix for DB subnet"
-#   type        = string
-# }
+variable "dns_service_ip" {
+  description = "DNS service IP"
+  type        = string
+}
 
 variable "acr_name" {
   description = "Name of the Azure Container Registry"

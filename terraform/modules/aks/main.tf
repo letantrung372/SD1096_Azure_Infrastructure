@@ -10,7 +10,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
     name           = "default"
     node_count     = var.node_count
     vm_size        = var.vm_size
-    # vnet_subnet_id = var.subnet_id[0]
   }
 
   identity {
@@ -18,8 +17,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   network_profile {
-    network_plugin    = "azure"
-    load_balancer_sku = "standard"
+    network_plugin = "azure"
+    service_cidr   = var.aks_subnet_prefix
+    dns_service_ip = var.dns_service_ip
   }
 }
 
